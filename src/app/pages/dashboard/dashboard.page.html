@@ -1,0 +1,7 @@
+<ion-header><ion-toolbar><ion-title>Dashboard</ion-title></ion-toolbar></ion-header>
+<ion-content class="ion-padding">
+  <div *ngIf="user$ | async as user">
+    <h2>Welcome, {{ user.name }}!</h2>
+    <ion-button (onKeuUp)="logout()">Logout</ion-button>
+  </div>
+</ion-content>
