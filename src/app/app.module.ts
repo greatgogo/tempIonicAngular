@@ -8,14 +8,14 @@ import { StoreModule, MetaReducer } from '@ngrx/store';
 import { userReducer } from './store/reducers/user.reducer';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { StoreRouterConnectingModule } from '@ngrx/router-store';
-import { localStorageSync } from 'ngrx-store-localstorage';
 import { AuthInterceptor } from './core/services/api/auth.interceptor';
+import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
+import { HttpClient } from '@angular/common/http';
+import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 
-export function localStorageSyncReducer(reducer: any): any {
-  return localStorageSync({ keys: ['user'], rehydrate: true })(reducer);
+export function HttpLoaderFactory(http: HttpClient) {
+  return new TranslateHttpLoader(http, './assets/i18n/', '.json');
 }
-
-const metaReducers: MetaReducer[] = [localStorageSyncReducer];
 
 @NgModule({
   declarations: [AppComponent],
@@ -24,9 +24,16 @@ const metaReducers: MetaReducer[] = [localStorageSyncReducer];
     IonicModule.forRoot(),
     AppRoutingModule,
     HttpClientModule,
-    StoreModule.forRoot({ user: userReducer }, { metaReducers }),
+    StoreModule.forRoot({ user: userReducer }, {  }),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
-    StoreRouterConnectingModule.forRoot()
+    StoreRouterConnectingModule.forRoot(),
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: HttpLoaderFactory,
+        deps: [HttpClient]
+      }
+    })
   ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: AuthInterceptor, multi: true }

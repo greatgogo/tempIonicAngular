@@ -13,7 +13,7 @@ import { UpdateProfilePage } from './update-profile.page';
 import { updateUser } from '../../store/actions/user.actions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ApiService } from '../../core/services/api/api.service';
-import { of } from 'rxjs';
+import { of, throwError } from 'rxjs';
 
 describe('UpdateProfilePage', () => {
   let component: UpdateProfilePage;
@@ -126,13 +126,53 @@ describe('UpdateProfilePage', () => {
     expect(routerSpy.navigate).not.toHaveBeenCalled();
   });
 
-  // Test API error: should not dispatch or navigate if updateProfile throws error
-  it('should not dispatch updateUser or navigate if ApiService.updateProfile throws error', () => {
-    apiServiceSpy.updateProfile.and.returnValue({
-      subscribe: ({ next, error }: any) => {
-        if (error) error(new Error('Update failed'));
-      }
-    } as any);
+  // Test form submission with all fields whitespace
+  it('should not call updateProfile, dispatch, or navigate if all fields are whitespace', () => {
+    component.updateForm.setValue({
+      name: '   ',
+      email: '   ',
+      phone: '   ',
+    });
+    component.onSubmit();
+    expect(apiServiceSpy.updateProfile).not.toHaveBeenCalled();
+    expect(storeDispatchSpy).not.toHaveBeenCalled();
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  });
+
+  // Test form submission with special characters in fields
+  it('should call updateProfile with special characters in fields', () => {
+    component.updateForm.setValue({
+      name: 'Test!@#',
+      email: 'test+user@example.com',
+      phone: '+1-800-555-0199',
+    });
+    component.onSubmit();
+    expect(apiServiceSpy.updateProfile).toHaveBeenCalledWith({
+      name: 'Test!@#',
+      email: 'test+user@example.com',
+      phone: '+1-800-555-0199',
+    });
+    expect(storeDispatchSpy).toHaveBeenCalled();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  // Test multiple valid submissions
+  it('should allow multiple valid submissions', () => {
+    component.updateForm.setValue({
+      name: 'Test User',
+      email: 'test@example.com',
+      phone: '1234567890',
+    });
+    component.onSubmit();
+    component.onSubmit();
+    expect(apiServiceSpy.updateProfile).toHaveBeenCalledTimes(2);
+    expect(storeDispatchSpy).toHaveBeenCalledTimes(2);
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  // Test error handling: simulate error and check for error handling logic (if any)
+  it('should handle error and allow retry', () => {
+    apiServiceSpy.updateProfile.and.returnValue(throwError(() => new Error('Update failed')));
     component.updateForm.setValue({
       name: 'Test User',
       email: 'test@example.com',
@@ -141,5 +181,11 @@ describe('UpdateProfilePage', () => {
     component.onSubmit();
     expect(storeDispatchSpy).not.toHaveBeenCalled();
     expect(routerSpy.navigate).not.toHaveBeenCalled();
+
+    // Now simulate a successful retry
+    apiServiceSpy.updateProfile.and.returnValue(of({ id: 2, name: 'Test User', email: 'test@example.com', phone: '1234567890' }));
+    component.onSubmit();
+    expect(storeDispatchSpy).toHaveBeenCalled();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
   });
 });

@@ -1,5 +1,11 @@
-<ion-header><ion-toolbar><ion-title>Login</ion-title></ion-toolbar></ion-header>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>{{ 'LOGIN.TITLE' | translate }}</ion-title>
+  </ion-toolbar>
+</ion-header>
 <ion-content class="ion-padding">
-  <ion-input [(ngModel)]="email" placeholder="Enter email"></ion-input>
-  <ion-button (onKeyUp)="login()">Login</ion-button>
+  <ion-input [(ngModel)]="email" [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate"></ion-input>
+  <ion-input [(ngModel)]="password" [placeholder]="'LOGIN.PASSWORD_PLACEHOLDER' | translate" type="password"></ion-input>
+  <ion-button (click)="login()">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</ion-button>
+  <ion-button expand="block" fill="clear" routerLink="/signup">{{ 'LOGIN.SIGNUP_LINK' | translate }}</ion-button>
 </ion-content>

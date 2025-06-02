@@ -42,4 +42,8 @@ export class ApiService {
   updateProfile(details: { name: string; email: string; phone: string }): Observable<User> {
     return this.http.put<User>(`${this.baseUrl}/users/me`, details);
   }
+
+  signup(user: { name: string; email: string; password: string }): Observable<any> {
+    return this.http.post<any>(`${this.baseUrl}/auth/signup`, user);
+  }
 }

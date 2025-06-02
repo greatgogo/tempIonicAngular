@@ -1,5 +1,5 @@
 import { createReducer, on } from '@ngrx/store';
-import { loginSuccess, logout, updateUser } from '../actions/user.actions';
+import { loginSuccess, logout, updateUser, signup } from '../actions/user.actions';
 import { User } from '../../core/models/user.model';
 
 // NgRx User Reducer
@@ -21,6 +21,12 @@ export const initialState: UserState = {
 
 export const userReducer = createReducer(
   initialState,
+    on(signup, (state, { user }) => ({
+    ...state,
+    id: Date.now(), // Simulate user ID
+    name: user.name,
+    email: user.email,
+  })),
   on(loginSuccess, (state, { user }) => ({ ...state, user })), // Set user on login
   on(updateUser, (state, { name, email, phone }) => ({
     ...state,

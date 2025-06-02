@@ -17,6 +17,11 @@ export const setUser = createAction(
   props<{ name: string }>()
 );
 
+export const signup = createAction(
+  '[User] Signup',
+  props<{ user: { name: string; email: string; password: string } }>()
+);
+
 export const loadUser = createAction('[User] Load');
 export const loginSuccess = createAction('[User] Login Success', props<{ user: User }>());
 export const logout = createAction('[User] Logout');

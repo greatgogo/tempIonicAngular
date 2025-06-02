@@ -153,6 +153,50 @@ describe('ApiService', () => {
     req.flush({ message: 'Bad Request' }, { status: 400, statusText: 'Bad Request' });
   });
 
+  // Test signup method: should make a POST request and return a user
+  it('should signup a user', () => {
+    const signupData = { name: 'Jane', email: 'jane@example.com', password: 'pass123' };
+    const response = { id: 2, name: 'Jane', email: 'jane@example.com' };
+    service.signup(signupData).subscribe((user) => {
+      expect(user).toEqual(response);
+    });
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/auth/signup`);
+    expect(req.request.method).toBe('POST');
+    expect(req.request.body).toEqual(signupData);
+    req.flush(response);
+  });
+
+  // Test signup method: should handle API error
+  it('should handle error on signup', () => {
+    const signupData = { name: 'Jane', email: 'jane@example.com', password: 'pass123' };
+    service.signup(signupData).subscribe({
+      next: () => fail('should have errored'),
+      error: (err) => {
+        expect(err.status).toBe(400);
+      }
+    });
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/auth/signup`);
+    req.flush({ message: 'Bad Request' }, { status: 400, statusText: 'Bad Request' });
+  });
+
+  // Test edge case: empty payloads for post/put/patch/delete
+  it('should handle empty payloads gracefully', () => {
+    service.post('empty', {}).subscribe((data) => {
+      expect(data).toEqual({});
+    });
+    httpMock.expectOne(`${environment.apiBaseUrl}/empty`).flush({});
+
+    service.put('empty', {}).subscribe((data) => {
+      expect(data).toEqual({});
+    });
+    httpMock.expectOne(`${environment.apiBaseUrl}/empty`).flush({});
+
+    service.patch('empty', {}).subscribe((data) => {
+      expect(data).toEqual({});
+    });
+    httpMock.expectOne(`${environment.apiBaseUrl}/empty`).flush({});
+  });
+
   // Verify that there are no outstanding HTTP requests after each test
   afterEach(() => {
     httpMock.verify();

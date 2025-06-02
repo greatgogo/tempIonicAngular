@@ -2,6 +2,9 @@
 <ion-content class="ion-padding">
   <div *ngIf="user$ | async as user">
     <h2>Welcome, {{ user.name }}!</h2>
-    <ion-button (onKeuUp)="logout()">Logout</ion-button>
+    <div>
+      <strong>Date:</strong> {{ today | appDate }}
+    </div>
+    <ion-button (click)="logout()">Logout</ion-button>
   </div>
 </ion-content>
