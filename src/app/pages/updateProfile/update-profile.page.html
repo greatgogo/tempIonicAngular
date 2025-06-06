@@ -1,25 +1,46 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Update Profile</ion-title>
+    <ion-title>{{ 'UPDATE_PROFILE.TITLE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
 <ion-content>
   <form [formGroup]="updateForm" (ngSubmit)="onSubmit()">
     <ion-list>
+      <!-- Profile Image Section -->
       <ion-item>
-        <ion-label position="floating">Name</ion-label>
+        <ion-label>{{ 'UPDATE_PROFILE.PROFILE_IMAGE' | translate }}</ion-label>
+        <ion-avatar slot="end">
+          <img [src]="profileImage || 'assets/default-avatar.png'" alt="{{ 'UPDATE_PROFILE.PROFILE_IMAGE_ALT' | translate }}">
+        </ion-avatar>
+      </ion-item>
+      <ion-item>
+        <ion-button expand="block" (click)="uploadFromCamera()">{{ 'UPDATE_PROFILE.UPLOAD_CAMERA' | translate }}</ion-button>
+        <ion-button expand="block" (click)="uploadFromGallery()">{{ 'UPDATE_PROFILE.UPLOAD_GALLERY' | translate }}</ion-button>
+      </ion-item>
+
+      <!-- Existing Form Fields -->
+      <ion-item>
+        <ion-label position="floating">{{ 'UPDATE_PROFILE.NAME' | translate }}</ion-label>
         <ion-input formControlName="name"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Email</ion-label>
+        <ion-label position="floating">{{ 'UPDATE_PROFILE.EMAIL' | translate }}</ion-label>
         <ion-input formControlName="email" type="email"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-label position="floating">Phone Number</ion-label>
+        <ion-label position="floating">{{ 'UPDATE_PROFILE.PHONE' | translate }}</ion-label>
         <ion-input formControlName="phone" type="tel"></ion-input>
       </ion-item>
+      <ion-item>
+        <ion-label>{{ 'UPDATE_PROFILE.LANGUAGE' | translate }}</ion-label>
+        <ion-select [(ngModel)]="selectedLanguage" (ionChange)="changeLanguage($event.detail.value)">
+          <ion-select-option *ngFor="let lang of availableLanguages" [value]="lang.code">
+            {{ lang.label }}
+          </ion-select-option>
+        </ion-select>
+      </ion-item>
     </ion-list>
-    <ion-button expand="block" type="submit" [disabled]="!updateForm.valid">Update</ion-button>
+    <ion-button expand="block" type="button" (click)="showConfirmationModal()">{{ 'UPDATE_PROFILE.UPDATE_BUTTON' | translate }}</ion-button>
   </form>
 </ion-content>

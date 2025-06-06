@@ -4,6 +4,7 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPage } from './dashboard.page';
 import { RouterModule } from '@angular/router';
 import { AppDatePipe } from '../../shared/pipes/app-date.pipe';
+import { TranslateModule } from '@ngx-translate/core';
 
 @NgModule({
   imports: [
@@ -11,7 +12,8 @@ import { AppDatePipe } from '../../shared/pipes/app-date.pipe';
     AppDatePipe,
     CommonModule,
     IonicModule,
-    RouterModule.forChild([{ path: '', component: DashboardPage }])
+    RouterModule.forChild([{ path: '', component: DashboardPage }]),
+    TranslateModule
   ]
 })
 export class DashboardPageModule {}

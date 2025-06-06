@@ -1,11 +1,14 @@
 <ion-header>
   <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
     <ion-title>{{ 'LOGIN.TITLE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
+<ion-content fullscreen="true" forceOverscroll="false" class="ion-padding">
   <ion-input [(ngModel)]="email" [placeholder]="'LOGIN.EMAIL_PLACEHOLDER' | translate"></ion-input>
   <ion-input [(ngModel)]="password" [placeholder]="'LOGIN.PASSWORD_PLACEHOLDER' | translate" type="password"></ion-input>
-  <ion-button (click)="login()">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</ion-button>
+  <ion-button expand="block" (click)="login()">{{ 'LOGIN.LOGIN_BUTTON' | translate }}</ion-button>
   <ion-button expand="block" fill="clear" routerLink="/signup">{{ 'LOGIN.SIGNUP_LINK' | translate }}</ion-button>
 </ion-content>

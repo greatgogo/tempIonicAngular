@@ -7,12 +7,12 @@ import { logout } from '../../store/actions/user.actions';
 import { Router } from '@angular/router';
 import { AppDatePipe } from '../../shared/pipes/app-date.pipe';
 import { IonHeader, IonToolbar, IonTitle, IonContent, IonButton } from "@ionic/angular/standalone";
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
-  // Add the pipe to the imports if using standalone, otherwise declare in module
-  imports: [IonButton, IonContent, IonTitle, IonToolbar, IonHeader, AppDatePipe]
+  imports: [CommonModule, IonButton, IonContent, IonTitle, IonToolbar, IonHeader, AppDatePipe]
 })
 export class DashboardPage {
   user$: Observable<User | null>;

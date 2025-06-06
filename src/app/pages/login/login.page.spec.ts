@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 import { LoginPage } from './login.page';
 import { Store } from '@ngrx/store';
-import { IonicModule, NavController } from '@ionic/angular';
+import { IonicModule, NavController, Platform } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
@@ -68,7 +68,7 @@ describe('LoginPage', () => {
 
   // Test successful login: should dispatch loginSuccess and navigate
   it('should dispatch loginSuccess and navigate to dashboard on login', () => {
-    component.name = 'Test User';
+    //component.name = 'Test User'; // Remove this line
     component.email = 'test@example.com';
     component.password = 'password123';
     component.login();
@@ -79,20 +79,9 @@ describe('LoginPage', () => {
   });
 
   // Test failed login: does not dispatch or navigate if name is empty
-  it('should not login and stay on login page if name is empty', () => {
-    apiServiceSpy.login.and.callFake(() => { throw new Error('login should not be called'); });
-    component.name = '';
-    component.email = 'test@example.com';
-    component.password = 'password123';
-    component.login();
-    expect(apiServiceSpy.login).not.toHaveBeenCalled();
-    expect(storeDispatchSpy).not.toHaveBeenCalled();
-    expect(routerSpy.navigate).not.toHaveBeenCalled();
-  });
-
   it('should not login and stay on login page if email is empty', () => {
     apiServiceSpy.login.and.callFake(() => { throw new Error('login should not be called'); });
-    component.name = 'Test User';
+    //component.name = 'Test User'; // Remove this line
     component.email = '';
     component.password = 'password123';
     component.login();
@@ -103,7 +92,7 @@ describe('LoginPage', () => {
 
   it('should not login and stay on login page if password is empty', () => {
     apiServiceSpy.login.and.callFake(() => { throw new Error('login should not be called'); });
-    component.name = 'Test User';
+    //component.name = 'Test User'; // Remove this line
     component.email = 'test@example.com';
     component.password = '';
     component.login();
@@ -112,11 +101,11 @@ describe('LoginPage', () => {
     expect(routerSpy.navigate).not.toHaveBeenCalled();
   });
 
-  it('should not login and stay on login page if name and email are empty', () => {
+  it('should not login and stay on login page if email and password are empty', () => {
     apiServiceSpy.login.and.callFake(() => { throw new Error('login should not be called'); });
-    component.name = '';
+    //component.name = ''; // Remove this line
     component.email = '';
-    component.password = 'password123';
+    component.password = '';
     component.login();
     expect(apiServiceSpy.login).not.toHaveBeenCalled();
     expect(storeDispatchSpy).not.toHaveBeenCalled();
@@ -126,7 +115,7 @@ describe('LoginPage', () => {
   // Test login with ApiService returning error: should not dispatch or navigate
   it('should not dispatch or navigate if ApiService.login throws error', () => {
     apiServiceSpy.login.and.returnValue(throwError(() => new Error('Login failed')));
-    component.name = 'Test User';
+    //component.name = 'Test User'; // Remove this line
     component.email = 'test@example.com';
     component.password = 'password123';
     component.login();
@@ -135,7 +124,7 @@ describe('LoginPage', () => {
   });
 
   it('should not login if all fields are whitespace', () => {
-    component.name = '   ';
+    //component.name = 'Test User'; // Remove this line
     component.email = '   ';
     component.password = '   ';
     component.login();
@@ -145,7 +134,7 @@ describe('LoginPage', () => {
   });
 
   it('should trim whitespace and login if fields are valid after trim', () => {
-    component.name = '  Test User  ';
+    //component.name = '  Test User  '; // Remove this line
     component.email = '  test@example.com  ';
     component.password = '  password123  ';
     component.login();
@@ -155,7 +144,7 @@ describe('LoginPage', () => {
   });
 
   it('should allow login with special characters in credentials', () => {
-    component.name = 'Test!@#';
+    //component.name = 'Test!@#'; // Remove this line
     component.email = 'test+user@example.com';
     component.password = 'p@$$w0rd!';
     component.login();
@@ -165,7 +154,7 @@ describe('LoginPage', () => {
   });
 
   it('should handle multiple login attempts', () => {
-    component.name = 'Test User';
+    //component.name = 'Test User'; // Remove this line
     component.email = 'test@example.com';
     component.password = 'password123';
     component.login();
@@ -177,7 +166,7 @@ describe('LoginPage', () => {
 
   it('should handle error and allow retry', () => {
     apiServiceSpy.login.and.returnValue(throwError(() => new Error('Login failed')));
-    component.name = 'Test User';
+    //component.name = 'Test User'; // Remove this line
     component.email = 'test@example.com';
     component.password = 'password123';
     component.login();
@@ -189,5 +178,61 @@ describe('LoginPage', () => {
     component.login();
     expect(storeDispatchSpy).toHaveBeenCalled();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  it('should mark email as invalid if not a valid email', () => {
+    component.email = 'invalid-email';
+    component.password = 'password123';
+    component.login();
+    expect(storeDispatchSpy).not.toHaveBeenCalled();
+  });
+
+  it('should handle API error during login', () => {
+    apiServiceSpy.login.and.returnValue(throwError(() => new Error('Login failed')));
+    component.email = 'test@example.com';
+    component.password = 'password123';
+    component.login();
+    expect(apiServiceSpy.login).toHaveBeenCalled();
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should show a toast if email and password are empty', async () => {
+    spyOn(component, 'showToast');
+    component.email = '';
+    component.password = '';
+    component.login();
+    expect(component.showToast).toHaveBeenCalledWith('LOGIN.VALIDATION.REQUIRED');
+  });
+
+  it('should show a toast if email is invalid', async () => {
+    spyOn(component, 'showToast');
+    component.email = 'invalid-email';
+    component.password = 'password123';
+    component.login();
+    expect(component.showToast).toHaveBeenCalledWith('LOGIN.VALIDATION.INVALID_EMAIL');
+  });
+
+  it('should show a toast if login fails', async () => {
+    spyOn(component, 'showToast');
+    apiServiceSpy.login.and.returnValue(throwError(() => new Error('Login failed')));
+    component.email = 'test@example.com';
+    component.password = 'password123';
+    component.login();
+    expect(component.showToast).toHaveBeenCalledWith('LOGIN.ERROR.FAILED');
+  });
+
+  // Test back button handling
+  it('should navigate to home on back button press', () => {
+    const platformSpy = TestBed.inject(Platform);
+    spyOn(platformSpy.backButton, 'subscribeWithPriority').and.callFake((_, callback) => callback());
+    component.ionViewDidEnter();
+    expect(routerSpy.navigate).toHaveBeenCalledWith(['/']);
+  });
+
+  it('should unsubscribe back button on leave', () => {
+    const subscriptionSpy = jasmine.createSpyObj('Subscription', ['unsubscribe']);
+    component['backButtonSubscription'] = subscriptionSpy;
+    component.ionViewWillLeave();
+    expect(subscriptionSpy.unsubscribe).toHaveBeenCalled();
   });
 });

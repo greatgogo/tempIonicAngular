@@ -116,4 +116,30 @@ describe('SignupPage', () => {
     expect(routerSpy.navigate).not.toHaveBeenCalled();
     // Optionally check for error handling logic here
   });
+
+  it('should mark email as invalid if not a valid email', () => {
+    component.email = 'invalid-email';
+    component.password = 'password123';
+    component.onSignup();
+    expect(storeDispatchSpy).not.toHaveBeenCalled();
+  });
+
+  it('should not dispatch signup if email is invalid', () => {
+    component.name = 'Test User';
+    component.email = 'invalid-email';
+    component.password = 'password123';
+    component.onSignup();
+    expect(storeDispatchSpy).not.toHaveBeenCalled();
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  });
+
+  it('should handle API error during signup and not navigate', () => {
+    apiServiceSpy.signup.and.returnValue(throwError(() => new Error('Signup failed')));
+    component.name = 'Test User';
+    component.email = 'test@example.com';
+    component.password = 'password123';
+    component.onSignup();
+    expect(apiServiceSpy.signup).toHaveBeenCalled();
+    expect(routerSpy.navigate).not.toHaveBeenCalled();
+  });
 });

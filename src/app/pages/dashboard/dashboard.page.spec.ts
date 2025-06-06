@@ -55,4 +55,12 @@ describe('DashboardPage', () => {
     expect(() => component.logout()).toThrowError('Dispatch error');
     expect(routerSpy.navigate).not.toHaveBeenCalled();
   });
+
+  // Test logout: should log an error if logout dispatch fails
+  it('should log an error if logout dispatch fails', () => {
+    spyOn(console, 'error');
+    spyOn(store, 'dispatch').and.throwError('Dispatch error');
+    expect(() => component.logout()).toThrowError('Dispatch error');
+    expect(console.error).toHaveBeenCalledWith('Dispatch error');
+  });
 });

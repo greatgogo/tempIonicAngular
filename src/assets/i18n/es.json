@@ -1,0 +1,48 @@
+{
+  "LOGIN": {
+    "TITLE": "Iniciar sesión",
+    "EMAIL_PLACEHOLDER": "Introduce el correo electrónico",
+    "PASSWORD_PLACEHOLDER": "Introduce la contraseña",
+    "LOGIN_BUTTON": "Iniciar sesión",
+    "SIGNUP_LINK": "¿No tienes una cuenta? Regístrate",
+    "VALIDATION": {
+      "REQUIRED": "El correo electrónico y la contraseña son obligatorios.",
+      "INVALID_EMAIL": "Por favor, introduce una dirección de correo electrónico válida."
+    },
+    "ERROR": {
+      "FAILED": "Error al iniciar sesión. Por favor, verifica tus credenciales."
+    }
+  },
+  "SIGNUP": {
+    "TITLE": "Regístrate",
+    "NAME_PLACEHOLDER": "Nombre",
+    "EMAIL_PLACEHOLDER": "Correo electrónico",
+    "PASSWORD_PLACEHOLDER": "Contraseña",
+    "SIGNUP_BUTTON": "Regístrate",
+    "LOGIN_LINK": "¿Ya tienes una cuenta? Inicia sesión"
+  },
+  "UPDATE_PROFILE": {
+    "TITLE": "Actualizar perfil",
+    "PROFILE_IMAGE": "Imagen de perfil",
+    "PROFILE_IMAGE_ALT": "Imagen de perfil",
+    "UPLOAD_CAMERA": "Subir desde la cámara",
+    "UPLOAD_GALLERY": "Subir desde la galería",
+    "NAME": "Nombre",
+    "EMAIL": "Correo electrónico",
+    "PHONE": "Número de teléfono",
+    "LANGUAGE": "Idioma",
+    "CONFIRM_UPDATE": {
+      "TITLE": "Confirmar Actualización",
+      "MESSAGE": "¿Estás seguro de que deseas actualizar tu perfil?",
+      "CONFIRM_TEXT": "Sí",
+      "CANCEL_TEXT": "No"
+    },
+    "UPDATE_BUTTON": "Actualizar"
+  },
+  "CAMERA": {
+    "TITLE": "Opciones de Cámara",
+    "TAKE_PHOTO": "Tomar una Foto",
+    "CHOOSE_FROM_GALLERY": "Elegir de la Galería",
+    "CANCEL": "Cancelar"
+  }
+}

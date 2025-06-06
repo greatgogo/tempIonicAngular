@@ -4,7 +4,14 @@
     "EMAIL_PLACEHOLDER": "Enter email",
     "PASSWORD_PLACEHOLDER": "Enter password",
     "LOGIN_BUTTON": "Login",
-    "SIGNUP_LINK": "Don't have an account? Sign Up"
+    "SIGNUP_LINK": "Don't have an account? Sign Up",
+    "VALIDATION": {
+      "REQUIRED": "Email and password are required.",
+      "INVALID_EMAIL": "Please enter a valid email address."
+    },
+    "ERROR": {
+      "FAILED": "Login failed. Please check your credentials."
+    }
   },
   "SIGNUP": {
     "TITLE": "Sign Up",
@@ -13,5 +20,29 @@
     "PASSWORD_PLACEHOLDER": "Password",
     "SIGNUP_BUTTON": "Sign Up",
     "LOGIN_LINK": "Already have an account? Login"
+  },
+  "UPDATE_PROFILE": {
+    "TITLE": "Update Profile",
+    "PROFILE_IMAGE": "Profile Image",
+    "PROFILE_IMAGE_ALT": "Profile Image",
+    "UPLOAD_CAMERA": "Upload from Camera",
+    "UPLOAD_GALLERY": "Upload from Gallery",
+    "NAME": "Name",
+    "EMAIL": "Email",
+    "PHONE": "Phone Number",
+    "LANGUAGE": "Language",
+    "CONFIRM_UPDATE": {
+      "TITLE": "Confirm Update",
+      "MESSAGE": "Are you sure you want to update your profile?",
+      "CONFIRM_TEXT": "Yes",
+      "CANCEL_TEXT": "No"
+    },
+    "UPDATE_BUTTON": "Update"
+  },
+  "CAMERA": {
+    "TITLE": "Camera Options",
+    "TAKE_PHOTO": "Take a Photo",
+    "CHOOSE_FROM_GALLERY": "Choose from Gallery",
+    "CANCEL": "Cancel"
   }
 }

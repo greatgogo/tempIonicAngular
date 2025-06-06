@@ -1,24 +1,27 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Sign Up</ion-title>
+    <ion-buttons slot="start">
+      <ion-back-button defaultHref="/"></ion-back-button>
+    </ion-buttons>
+    <ion-title>{{ 'SIGNUP.TITLE' | translate }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content fullscreen="true" forceOverscroll="false" class="ion-padding">
   <form (ngSubmit)="onSignup()">
     <ion-item>
       <ion-label position="floating">Name</ion-label>
-      <ion-input [(ngModel)]="name" name="name" required></ion-input>
+      <ion-input [(ngModel)]="name" name="name" [placeholder]="'SIGNUP.NAME_PLACEHOLDER' | translate" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Email</ion-label>
-      <ion-input [(ngModel)]="email" name="email" type="email" required></ion-input>
+      <ion-input [(ngModel)]="email" name="email" type="email" [placeholder]="'SIGNUP.EMAIL_PLACEHOLDER' | translate" required></ion-input>
     </ion-item>
     <ion-item>
       <ion-label position="floating">Password</ion-label>
-      <ion-input [(ngModel)]="password" name="password" type="password" required></ion-input>
+      <ion-input [(ngModel)]="password" name="password" type="password" [placeholder]="'SIGNUP.PASSWORD_PLACEHOLDER' | translate" required></ion-input>
     </ion-item>
-    <ion-button expand="block" type="submit">Sign Up</ion-button>
-    <ion-button expand="block" fill="clear" routerLink="/login">Already have an account? Login</ion-button>
+    <ion-button expand="block" type="submit">{{ 'SIGNUP.SIGNUP_BUTTON' | translate }}</ion-button>
+    <ion-button expand="block" fill="clear" routerLink="/login">{{ 'SIGNUP.LOGIN_LINK' | translate }}</ion-button>
   </form>
 </ion-content>

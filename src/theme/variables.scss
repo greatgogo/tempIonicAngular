@@ -1,2 +1,52 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+// Define color variables
+:root {
+  --ion-color-primary: #3880ff;
+  --ion-color-secondary: #3dc2ff;
+  --ion-color-tertiary: #5260ff;
+  --ion-color-success: #2dd36f;
+  --ion-color-warning: #ffc409;
+  --ion-color-danger: #eb445a;
+  --ion-color-light: #f4f5f8;
+  --ion-color-medium: #92949c;
+  --ion-color-dark: #222428;
+
+  // Custom colors
+  --app-background-color: #ffffff;
+  --app-text-color: #000000;
+  --app-header-background: var(--ion-color-primary);
+  --app-header-text-color: #ffffff;
+
+  // Button styles
+  --button-primary-background: var(--ion-color-primary);
+  --button-primary-text-color: #ffffff;
+  --button-secondary-background: var(--ion-color-secondary);
+  --button-secondary-text-color: #ffffff;
+
+  // Font sizes
+  --font-size-small: 12px;
+  --font-size-medium: 16px;
+  --font-size-large: 20px;
+
+  // Spacing
+  --spacing-small: 8px;
+  --spacing-medium: 16px;
+  --spacing-large: 24px;
+
+  // Border radius
+  --border-radius-small: 4px;
+  --border-radius-medium: 8px;
+  --border-radius-large: 12px;
+}
+
+// Dark mode variables
+@media (prefers-color-scheme: dark) {
+  :root {
+    --app-background-color: #121212;
+    --app-text-color: #ffffff;
+    --app-header-background: var(--ion-color-dark);
+    --app-header-text-color: #ffffff;
+  }
+}

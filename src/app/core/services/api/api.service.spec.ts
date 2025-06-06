@@ -197,6 +197,25 @@ describe('ApiService', () => {
     httpMock.expectOne(`${environment.apiBaseUrl}/empty`).flush({});
   });
 
+  it('should handle empty payloads for delete method', () => {
+    service.delete('empty').subscribe((response) => {
+      expect(response).toEqual({});
+    });
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/empty`);
+    req.flush({});
+  });
+
+  it('should handle API error for delete method', () => {
+    service.delete('data/1').subscribe({
+      next: () => fail('should have errored'),
+      error: (err) => {
+        expect(err.status).toBe(404);
+      }
+    });
+    const req = httpMock.expectOne(`${environment.apiBaseUrl}/data/1`);
+    req.flush({ message: 'Not Found' }, { status: 404, statusText: 'Not Found' });
+  });
+
   // Verify that there are no outstanding HTTP requests after each test
   afterEach(() => {
     httpMock.verify();

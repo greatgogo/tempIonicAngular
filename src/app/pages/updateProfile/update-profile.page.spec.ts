@@ -14,6 +14,8 @@ import { updateUser } from '../../store/actions/user.actions';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 import { ApiService } from '../../core/services/api/api.service';
 import { of, throwError } from 'rxjs';
+import { Camera } from '@capacitor/camera';
+import { Device } from '@capacitor/device';
 
 describe('UpdateProfilePage', () => {
   let component: UpdateProfilePage;
@@ -187,5 +189,96 @@ describe('UpdateProfilePage', () => {
     component.onSubmit();
     expect(storeDispatchSpy).toHaveBeenCalled();
     expect(routerSpy.navigate).toHaveBeenCalledWith(['/dashboard']);
+  });
+
+  // Test form control validation
+  it('should mark name as invalid if empty', () => {
+    const nameControl = component.updateForm.get('name');
+    nameControl?.setValue('');
+    expect(nameControl?.valid).toBeFalse();
+  });
+
+  it('should mark email as invalid if not a valid email', () => {
+    const emailControl = component.updateForm.get('email');
+    emailControl?.setValue('invalid-email');
+    expect(emailControl?.valid).toBeFalse();
+  });
+
+  it('should mark phone as invalid if empty', () => {
+    const phoneControl = component.updateForm.get('phone');
+    phoneControl?.setValue('');
+    expect(phoneControl?.valid).toBeFalse();
+  });
+
+  // Test error handling during API call
+  it('should display an error message if API call fails', () => {
+    spyOn(window.console, 'error'); // Mock console.error
+    apiServiceSpy.updateProfile.and.returnValue(throwError(() => new Error('API error')));
+    component.updateForm.setValue({
+      name: 'Test User',
+      email: 'test@example.com',
+      phone: '1234567890',
+    });
+    component.onSubmit();
+    expect(console.error).toHaveBeenCalledWith('API error');
+  });
+
+  it('should upload profile image from camera', async () => {
+    spyOn(Camera, 'getPhoto').and.returnValue(Promise.resolve({ dataUrl: 'camera-image-url' } as any));
+    await component.uploadFromCamera();
+    expect(component.profileImage).toBe('camera-image-url');
+  });
+
+  it('should upload profile image from gallery', async () => {
+    spyOn(Camera, 'getPhoto').and.returnValue(Promise.resolve({ dataUrl: 'gallery-image-url' } as any));
+    await component.uploadFromGallery();
+    expect(component.profileImage).toBe('gallery-image-url');
+  });
+
+  it('should show confirmation modal before submitting', async () => {
+    const modalSpy = spyOn(component['modalController'], 'create').and.callThrough();
+    await component.showConfirmationModal();
+    expect(modalSpy).toHaveBeenCalled();
+  });
+
+  // Test language initialization
+  it('should initialize language to device language or default to English', async () => {
+    spyOn(Device, 'getLanguageCode').and.returnValue(Promise.resolve({ value: 'es-ES' }));
+    spyOn(component.translate, 'use');
+    await component.initializeLanguage();
+    expect(component.selectedLanguage).toBe('es');
+    expect(component.translate.use).toHaveBeenCalledWith('es');
+  });
+
+  it('should default to English if device language is unsupported', async () => {
+    spyOn(Device, 'getLanguageCode').and.returnValue(Promise.resolve({ value: 'fr-FR' }));
+    spyOn(component.translate, 'use');
+    await component.initializeLanguage();
+    expect(component.selectedLanguage).toBe('en');
+    expect(component.translate.use).toHaveBeenCalledWith('en');
+  });
+
+  // Test language change
+  it('should change language when a new language is selected', () => {
+    spyOn(component.translate, 'use');
+    component.changeLanguage('es');
+    expect(component.selectedLanguage).toBe('es');
+    expect(component.translate.use).toHaveBeenCalledWith('es');
+  });
+
+  // Test confirmation modal
+  it('should show confirmation modal with translated content', async () => {
+    spyOn(component.translate, 'get').and.callFake((key: string) => {
+      const translations = {
+        'UPDATE_PROFILE.CONFIRM_UPDATE.TITLE': 'Confirmar Actualización',
+        'UPDATE_PROFILE.CONFIRM_UPDATE.MESSAGE': '¿Estás seguro de que deseas actualizar tu perfil?',
+        'UPDATE_PROFILE.CONFIRM_UPDATE.CONFIRM_TEXT': 'Sí',
+        'UPDATE_PROFILE.CONFIRM_UPDATE.CANCEL_TEXT': 'No'
+      };
+      return Promise.resolve(translations[key]);
+    });
+    const modalSpy = spyOn(component['modalController'], 'create').and.callThrough();
+    await component.showConfirmationModal();
+    expect(modalSpy).toHaveBeenCalled();
   });
 });
