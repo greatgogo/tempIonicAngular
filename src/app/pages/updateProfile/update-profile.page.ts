@@ -33,7 +33,7 @@ export class UpdateProfilePage {
     private readonly store: Store,
     private readonly router: Router,
     private readonly api: ApiService,
-    private readonly translate: TranslateService,
+    public readonly translate: TranslateService,
     private readonly modalController: ModalController // Inject ModalController
   ) {
     this.updateForm = this.fb.group({

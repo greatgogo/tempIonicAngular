@@ -23,9 +23,9 @@ export function HttpLoaderFactory(http: HttpClient) {
   imports: [
     BrowserModule,
     IonicModule.forRoot(),
-    AppRoutingModule,
+    AppRoutingModule, // Ensure this is imported
     HttpClientModule,
-    StoreModule.forRoot({ user: userReducer }, {  }),
+    StoreModule.forRoot({ user: userReducer }, {}),
     StoreDevtoolsModule.instrument({ maxAge: 25 }),
     StoreRouterConnectingModule.forRoot(),
     TranslateModule.forRoot({

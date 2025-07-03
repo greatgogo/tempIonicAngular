@@ -10,15 +10,15 @@
 <ion-content fullscreen="true" forceOverscroll="false" class="ion-padding">
   <form (ngSubmit)="onSignup()">
     <ion-item>
-      <ion-label position="floating">Name</ion-label>
+      <ion-label position="floating" class="spaced-label">Name</ion-label>
       <ion-input [(ngModel)]="name" name="name" [placeholder]="'SIGNUP.NAME_PLACEHOLDER' | translate" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Email</ion-label>
+      <ion-label position="floating" class="spaced-label">Email</ion-label>
       <ion-input [(ngModel)]="email" name="email" type="email" [placeholder]="'SIGNUP.EMAIL_PLACEHOLDER' | translate" required></ion-input>
     </ion-item>
     <ion-item>
-      <ion-label position="floating">Password</ion-label>
+      <ion-label position="floating" class="spaced-label">Password</ion-label>
       <ion-input [(ngModel)]="password" name="password" type="password" [placeholder]="'SIGNUP.PASSWORD_PLACEHOLDER' | translate" required></ion-input>
     </ion-item>
     <ion-button expand="block" type="submit">{{ 'SIGNUP.SIGNUP_BUTTON' | translate }}</ion-button>

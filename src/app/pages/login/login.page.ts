@@ -81,4 +81,7 @@ export class LoginPage implements OnDestroy {
       this.backButtonSubscription.unsubscribe();
     }
   }
+  goToSignup() {
+    this.router.navigate(['/signup']);
+  }
 }

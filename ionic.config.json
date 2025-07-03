@@ -1,5 +1,7 @@
 {
   "name": "temp",
-  "integrations": {},
+  "integrations": {
+    "capacitor": {}
+  },
   "type": "angular"
 }
